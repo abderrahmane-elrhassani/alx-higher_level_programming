@@ -1,0 +1,315 @@
+# The "add_integer" Module
+============================================
+Usage Guide for add_integer.py
+============================================
+
+This module comprises a single function named "add_integer()".
+
+Numbers
+=======
+
+The function "add_integer()" yields the sum of its input arguments. The default value for argument 'b' is 98. In numerical terms, this is akin to employing the "+" operator:
+
+Importing the add_integer function:
+```python
+>>> add_integer = __import__('0-add_integer').add_integer
+>>> add_integer(1, 2)
+3
+```
+
+Non-Numbers
+===========
+
+As "add_integer()" only accepts numerical inputs, it raises an error when confronted with non-numeric arguments.
+
+Adding an integer and a float:
+```python
+>>> add_integer(2, 3.0) #doctest: +REPORT_NDIFF
+5
+```
+
+Adding a float and an integer:
+```python
+>>> add_integer(3.0, 3)
+6
+```
+
+Passing a single argument:
+```python
+>>> add_integer(2)
+100
+```
+
+Combining a positive and negative integer:
+```python
+>>> add_integer(2, -4)
+-2
+```
+
+Combining a negative and positive integer:
+```python
+>>> add_integer(-6, 8)
+2
+```
+
+Combining an integer and a boolean:
+```python
+>>> add_integer(4, True)
+5
+```
+
+Combining a boolean and an integer:
+```python
+>>> add_integer(True, 4)
+5
+```
+
+Combining two booleans:
+```python
+>>> add_integer(False, True)
+1
+```
+
+Combining two booleans:
+```python
+>>> add_integer(True, True)
+2
+```
+
+Passing a single boolean argument:
+```python
+>>> add_integer(True, )
+99
+```
+
+Combining an integer and a boolean:
+```python
+>>> add_integer(4, False)
+4
+```
+
+Combining a boolean and an integer:
+```python
+>>> add_integer(False, 4)
+4
+```
+
+Combining two booleans:
+```python
+>>> add_integer(True, False)
+1
+```
+
+Combining two booleans:
+```python
+>>> add_integer(False, False)
+0
+```
+
+Passing a single boolean argument:
+```python
+>>> add_integer(False, )
+98
+```
+
+Combining two float values:
+```python
+>>> add_integer(3.0, 9.0) #doctest: +REPORT_NDIFF
+12
+```
+
+Combining two float values:
+```python
+>>> add_integer(12.3, 9.0) #doctest: +REPORT_NDIFF
+21
+```
+
+Combining two float values:
+```python
+>>> add_integer(12.3, 9.8) #doctest: +REPORT_NDIFF
+21
+```
+
+Passing 'None' as the sole argument:
+```python
+>>> add_integer(None)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining an integer and 'None':
+```python
+>>> add_integer(2, None)
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+```
+
+Combining a string and an integer:
+```python
+>>> add_integer('a', 3)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining a tuple and an integer:
+```python
+>>> add_integer((), 3)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining a set and an integer:
+```python
+>>> add_integer({}, 3)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining a list and an integer:
+```python
+>>> add_integer([], 3)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining an integer and a string:
+```python
+>>> add_integer(2, '3')
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+```
+
+Combining an integer and a tuple:
+```python
+>>> add_integer(2, ())
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+```
+
+Combining an integer and a set:
+```python
+>>> add_integer(2, {})
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+```
+
+Combining an integer and a set:
+```python
+>>> add_integer(3, [])
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+```
+
+Passing a tuple as the sole argument:
+```python
+>>> add_integer((3, 4))
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
+```
+
+Combining NaN and an integer:
+```python
+>>> add_integer(float("nan"), 4)
+Traceback (most recent call last):
+    ...
+ValueError: cannot convert float NaN to integer
+```
+
+Combining an integer and NaN:
+```python
+>>> add_integer(1, float('nan'))
+Traceback (most recent call last):
+    ...
+ValueError: cannot convert float NaN to integer
+```
+
+Combining an integer and a positive undefined number:
+```python
+>>> add_integer(1, float('inf'))
+Traceback (most recent call last):
+    ...
+OverflowError: cannot convert float infinity to integer
+```
+
+Combining an integer and a negative undefined number:
+```python
+>>> add_integer(1, float('-inf'))
+Traceback (most recent call last):
+    ...
+OverflowError: cannot convert float infinity to integer
+```
+
+Combining a positive undefined number and an integer:
+```python
+>>> add_integer(float('inf'), 1)
+Traceback (most recent call last):
+    ...
+OverflowError: cannot convert float infinity to integer
+```
+
+Combining a negative undefined number and an integer:
+```python
+>>> add_integer(float('-inf'), 1)
+Traceback (most recent call last):
+    ...
+OverflowError: cannot convert float infinity to integer
+```
+
+Passing more than 2 arguments to the function:
+```python
+>>> add_integer(2, 3, 5, 6) #doctest: +ELLIPSIS
+Traceback (most recent call last):
+    ...
+TypeError: add_integer() takes from 1 to 2 positional arguments but ...
+```
+
+Passing only the second argument:
+```python
+>>> add_integer(, 3)
+Traceback (most recent call last):
+    ...
+SyntaxError: invalid syntax
+```
+
+Passing only a symbol:
+```python
+>>> add_integer(,)
+Traceback (most recent call last):
+    ...
+SyntaxError: invalid syntax
+```
+
+Passing only a symbol:
+```python
+>>> add_integer(/)
+Traceback (most recent call last):
+    ...
+SyntaxError: invalid syntax
+```
+
+Passing an undefined variable:
+```python
+>>> add_integer(b) #doctest: +ELLIPSIS
+Traceback (most recent call last):
+    ...
+NameError: name ... is not defined
+```
+
+Passing 0 arguments:
+```python
+>>> add_integer()
+Traceback (most recent call last):
+    ...
+TypeError: add_integer() missing 1 required positional argument: 'a'
+```
