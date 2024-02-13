@@ -1,187 +1,97 @@
-"""Defines a base model class."""
-import json
-import csv
-import turtle
+#!/usr/bin/python3
+"""Defines a class Square"""
 
 
-class Base:
-    """Base model.
+from inspect import classify_class_attrs
+from models.rectangle import Rectangle
 
-    This Represents the "base" for all other classes in project 0x0C*.
 
-    Private Class Attributes:
-        __nb_object (int): Number of instantiated Bases.
+class Square(Rectangle):
+    """Class that defines properties of Square.
+
+     Attributes:
+        width (int): width of rectangle.
+        height (int): height of rectangle.
+        x (int): x.
+        y (int): y.
+        id (int): identity of square.
     """
-
-    __nb_objects = 0
-
-    def __init__(self, id=None):
-        """Initialize a new Base.
+    def __init__(self, size, x=0, y=0, id=None):
+        """Creates new instances of Square
 
         Args:
-            id (int): The identity of the new Base.
+            size (int): width and height of square.
+            x (int, optional): x. Defaults to 0.
+            y (int, optional): y. Defaults to 0.
+            id (int, optional): Identity number of square. Defaults to None.
         """
-        if id is not None:
-            self.id = id
+        super().__init__(size, size, x, y, id)
+
+    def __str__(self):
+        """Prints square"""
+        return ("[Square] ({}) {:d}/{:d} - {:d}".
+                format(self.id, self.x, self.y, self.size))
+
+    @property
+    def size(self):
+        """Property retriever for size.
+
+        Returns:
+            int: size of one side of square.
+        """
+        return self.width
+
+    @size.setter
+    def size(self, value):
+        """Property setter for width of square.
+        Args:
+            value (int): width of square.
+        Raises:
+            TypeError: if width is not an integer.
+            ValueError: if width is less than or equal to zero.
+        """
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value <= 0:
+            raise ValueError("width must be > 0")
+        
+        self.width = value
+        self.height = value
+
+    def update(self, *args, **kwargs):
+        """Assigns an argument to each attribute
+
+        Args:
+            *args (tuple): arguments.
+            **kwargs (dict): double pointer to a dictionary.
+        """
+        if args is not None and len(args) is not 0:
+            list_atr = ['id', 'size', 'x', 'y']
+            for i in range(len(args)):
+                if list_atr[i] == 'size':
+                    setattr(self, 'width', args[i])
+                    setattr(self, 'height', args[i])
+                else:
+                    setattr(self, list_atr[i], args[i])
         else:
-            Base.__nb_objects += 1
-            self.id = Base.__nb_objects
-
-    @staticmethod
-    def to_json_string(list_dictionaries):
-        """Return the JSON serialization of a list of dicts.
-
-        Args:
-            list_dictionaries (list): A list of dictionaries.
-        """
-        if list_dictionaries is None or list_dictionaries == []:
-            return "[]"
-        return json.dumps(list_dictionaries)
-
-    @classmethod
-    def save_to_file(cls, list_objs):
-        """Write the JSON serialization of a list of objects to a file.
-
-        Args:
-            list_objs (list): A list of inherited Base instances.
-        """
-        filename = cls.__name__ + ".json"
-        with open(filename, "w") as jsonfile:
-            if list_objs is None:
-                jsonfile.write("[]")
-            else:
-                list_dicts = [o.to_dictionary() for o in list_objs]
-                jsonfile.write(Base.to_json_string(list_dicts))
-
-    @staticmethod
-    def from_json_string(json_string):
-        """Return the deserialization of a JSON string.
-
-        Args:
-            json_string (str): A JSON str representation of a list of dicts.
-        Returns:
-            If json_string is None or empty - an empty list.
-            Otherwise - the Python list represented by json_string.
-        """
-        if json_string is None or json_string == "[]":
-            return []
-        return json.loads(json_string)
-
-    @classmethod
-    def create(cls, **dictionary):
-        """Return a class instantied from a dictionary of attributes.
-
-        Args:
-            **dictionary (dict): Key/value pairs of attributes to initialize.
-        """
-        if dictionary and dictionary != {}:
-            if cls.__name__ == "Rectangle":
-                new = cls(1, 1)
-            else:
-                new = cls(1)
-            new.update(**dictionary)
-            return new
-
-    @classmethod
-    def load_from_file(cls):
-        """Return a list of classes instantiated from a file of JSON strings.
-
-        Reads from `<cls.__name__>.json`.
-
-        Returns:
-            If the file does not exist - an empty list.
-            Otherwise - a list of instantiated classes.
-        """
-        filename = str(cls.__name__) + ".json"
-        try:
-            with open(filename, "r") as jsonfile:
-                list_dicts = Base.from_json_string(jsonfile.read())
-                return [cls.create(**d) for d in list_dicts]
-        except IOError:
-            return []
-
-    @classmethod
-    def save_to_file_csv(cls, list_objs):
-        """Write the CSV serialization of a list of objects to a file.
-
-        Args:
-            list_objs (list): A list of inherited Base instances.
-        """
-        filename = cls.__name__ + ".csv"
-        with open(filename, "w", newline="") as csvfile:
-            if list_objs is None or list_objs == []:
-                csvfile.write("[]")
-            else:
-                if cls.__name__ == "Rectangle":
-                    fieldnames = ["id", "width", "height", "x", "y"]
+            for key, value in kwargs.items():
+                if key == 'size':
+                    setattr(self, 'width', value)
+                    setattr(self, 'height', value)
                 else:
-                    fieldnames = ["id", "size", "x", "y"]
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                for obj in list_objs:
-                    writer.writerow(obj.to_dictionary())
+                    setattr(self, key, value)
 
-    @classmethod
-    def load_from_file_csv(cls):
-        """Return a list of classes instantiated from a CSV file.
-
-        Reads from `<cls.__name__>.csv`.
+    def to_dictionary(self):
+        """Returns the dictionary representation of a Square.
 
         Returns:
-            If the file does not exist - an empty list.
-            Otherwise - a list of instantiated classes.
+            dict: square.
         """
-        filename = cls.__name__ + ".csv"
-        try:
-            with open(filename, "r", newline="") as csvfile:
-                if cls.__name__ == "Rectangle":
-                    fieldnames = ["id", "width", "height", "x", "y"]
-                else:
-                    fieldnames = ["id", "size", "x", "y"]
-                list_dicts = csv.DictReader(csvfile, fieldnames=fieldnames)
-                list_dicts = [dict([k, int(v)] for k, v in d.items())
-                              for d in list_dicts]
-                return [cls.create(**d) for d in list_dicts]
-        except IOError:
-            return []
+        dict1 = self.__dict__
+        dict2 = {}
+        dict2['id'] = dict1['id']
+        dict2['size'] = dict1['_Rectangle__width']
+        dict2['x'] = dict1['_Rectangle__x']
+        dict2['y'] = dict1['_Rectangle__y']
 
-    @staticmethod
-    def draw(list_rectangles, list_squares):
-        """Draw Rectangles and Squares using the turtle module.
-
-        Args:
-            list_rectangles (list): A list of Rectangle objects to draw.
-            list_squares (list): A list of Square objects to draw.
-        """
-        turt = turtle.Turtle()
-        turt.screen.bgcolor("#b7312c")
-        turt.pensize(3)
-        turt.shape("turtle")
-
-        turt.color("#ffffff")
-        for rect in list_rectangles:
-            turt.showturtle()
-            turt.up()
-            turt.goto(rect.x, rect.y)
-            turt.down()
-            for i in range(2):
-                turt.forward(rect.width)
-                turt.left(90)
-                turt.forward(rect.height)
-                turt.left(90)
-            turt.hideturtle()
-
-        turt.color("#b5e3d8")
-        for sq in list_squares:
-            turt.showturtle()
-            turt.up()
-            turt.goto(sq.x, sq.y)
-            turt.down()
-            for i in range(2):
-                turt.forward(sq.width)
-                turt.left(90)
-                turt.forward(sq.height)
-                turt.left(90)
-            turt.hideturtle()
-
-        turtle.exitonclick()
-
+        return dict2
