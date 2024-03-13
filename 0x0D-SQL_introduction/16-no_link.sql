@@ -1,0 +1,2 @@
+-- Write a script that retrieves all records from the "second_table" in the __ "hbtn_0c_0" database on your MySQL server. Results should display both th__ e score and the name (in this order), and records should be ordered by sc__ ore (top first). The database name will be passed as an argument to the `__ mysql` command.
+SELECT score, name FROM second_table WHERE name IS NOT NULL ORDER BY score DESC;
